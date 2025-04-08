@@ -28,9 +28,9 @@ fastapi dev main.py
 ---
 
 ##Server 
--started at http://127.0.0.1:8000
--Documentation at http://127.0.0.1:8000/docs
--Documentation at http://127.0.0.1:8000/redocs
+- started at http://127.0.0.1:8000
+- Documentation at http://127.0.0.1:8000/docs
+- Documentation at http://127.0.0.1:8000/redocs
 
 -ReDoc es una interfaz web que se genera automáticamente para documentar tu API. 
 -Es una alternativa a Swagger UI, pero con una presentación más limpia, estructurada y orientada a la lectura técnica.

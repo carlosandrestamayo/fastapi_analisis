@@ -1,0 +1,52 @@
+# 🐍 Entorno virtual
+venv/
+env/
+.venv/
+
+# 📦 Archivos de dependencias compilados
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# 🔧 Archivos de configuración de entorno/local
+*.env
+.env.*
+*.ini
+*.cfg
+*.toml
+
+# 📂 Archivos del editor
+.vscode/
+.idea/
+*.swp
+
+# 📂 Logs y resultados
+*.log
+*.out
+*.bak
+*.tmp
+*.db
+*.sqlite3
+
+# 🔧 Archivos de pruebas y cobertura
+htmlcov/
+coverage.xml
+*.cover
+.pytest_cache/
+
+# ⚙️ Archivos de ejecución
+.DS_Store
+*.pid
+
+# 🐳 Docker
+*.container
+*.pid
+docker-compose.override.yml
+
+# 📦 Compilaciones/instalaciones temporales
+build/
+dist/
+*.egg-info/
+
+# 🔐 Llaves y certificados (si se

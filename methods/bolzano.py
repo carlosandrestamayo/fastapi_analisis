@@ -1,7 +1,7 @@
 from sympy import symbols, lambdify, sympify
 from schemas.bolzano import BolzanoRequest, BolzanoResponse, BolzanoData, BolzanoSteps
 
-def verificar_teorema_bolzano(request: BolzanoRequest):
+def teorema_bolzano(request: BolzanoRequest):
     x = symbols('x')
     try:
 

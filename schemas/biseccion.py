@@ -48,7 +48,7 @@ class BisectionRow(BaseModel):
     error: Optional[float]  # Puede ser None en la primera iteración
 
 
-class BisectionStepsExplanation(BaseModel):
+class BisectionStep(BaseModel):
     step1: str
     step2: str
     step3: str
@@ -63,7 +63,7 @@ class BisectionData(BaseModel):
     root: float                               # Valor final de la raíz encontrada
     headers: List[str]                        # Nombres de las columnas para tabla
     rows: List[BisectionRow]                  # Iteraciones con sus datos
-    steps: List[BisectionStepsExplanation]    # Explicación paso a paso
+    steps: List[BisectionStep]                # Explicación paso a paso
     message_detention: str                    # Mensaje que explica por qué se detuvo
 
 

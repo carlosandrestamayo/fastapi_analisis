@@ -27,5 +27,8 @@ def teorema_bolzano(fn, a, b, decimales):
 def error_absoluto(xr_anterior, xr):
   return abs((xr - xr_anterior) / xr)
 
-def tolerancia(xr_last, xr):
-    return abs(xr- xr_last)
+def tolerancia(xr_last, xr, decimals):
+    return round(abs(xr- xr_last), decimals)
+
+def error_relativo(xr_anterior, xr, decimals):
+  return round(abs((xr - xr_anterior) / xr), decimals)

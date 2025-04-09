@@ -22,8 +22,7 @@ class BisectionRequest(BaseModel):
         lt=10, 
         description="Number of decimal places (must be > 0 and < 10)"
     )
-    criterion: Literal[
-        "error_absoluto", 
+    criterion: Literal[ 
         "error_relativo", 
         "tolerancia", 
         "max_iter"

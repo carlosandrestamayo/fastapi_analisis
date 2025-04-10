@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException
 from schemas.biseccion import BisectionRequest, BisectionResponse
 from schemas.bolzano import BolzanoRequest, BolzanoResponse
 from methods.bolzano import teorema_bolzano
-from methods.biseccion import bisection_method
+from methods.biseccion import bisection_method, imprimir_biseccion
 from pydantic import BaseModel, ValidationError
 
 router = APIRouter()
@@ -32,7 +32,7 @@ def bisection(request: BisectionRequest):
         )
     
     except Exception as e:
-        print(e)
+        #print(e)
 
         raise HTTPException(status_code=400, detail={"success": False, "message": str(e)})
         # return BisectionResponse(
@@ -40,3 +40,9 @@ def bisection(request: BisectionRequest):
         #     message= str(e),
         #     data= None
         # )
+
+@router.post('/imprimirbiseccion')
+def imprimir(request: BisectionRequest):
+    
+    response = imprimir_biseccion(request)
+    return response

@@ -1,8 +1,15 @@
 from sympy import symbols, sympify, lambdify
 from methods.util import teorema_bolzano, convert_to_decimal, error_absoluto, evaluate_function, tolerancia, error_relativo
 from schemas.biseccion import BisectionRequest, BisectionRow, BisectionResponse
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Response
 from pydantic import BaseModel, ValidationError
+
+from reportlab.lib.pagesizes import letter
+from reportlab.lib import colors
+from reportlab.lib.units import inch
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet
+
 
 MAX_ITER = 30
 
@@ -10,7 +17,7 @@ def calculate_xr_biseccion(a, b, decimales):
     return round((a + b) / 2, decimales)
 
 def bisection_method(data: BisectionRequest ):
-    
+    #print(data.function)
     try:
         #Bisection Request
         fn = data.function
@@ -168,7 +175,7 @@ def bisection_method(data: BisectionRequest ):
         )
 
     except Exception as e:
-        print(str(e))
+        #print(str(e))
         raise HTTPException(status_code=400, detail={"success": False, "message": str(e)})
         # return BisectionResponse(
         #       success=False,
@@ -176,3 +183,31 @@ def bisection_method(data: BisectionRequest ):
         #       data=None
         #  )
 
+
+import io
+
+def imprimir_biseccion(request: BisectionRequest):
+    data = bisection_method(request)
+
+    root = data.data.root
+    headers = data.data.headers
+    rows = data.data.rows
+    steps = data.data.steps
+    message_detention = data.data.message_detention
+
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=letter)
+    styles = getSampleStyleSheet()
+    elements = []
+
+    # Título
+    elements.append(Paragraph("📘 Método de la Bisección", styles["Title"]))
+    doc.build(elements)
+    buffer.seek(0)
+
+    return Response(
+        content=buffer.read(),
+        media_type="application/pdf",
+        headers={"Content-Disposition": "attachment; filename=biseccion_resultado.pdf"}
+    )
+    #return data

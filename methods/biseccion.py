@@ -114,7 +114,7 @@ def bisection_method(data: BisectionRequest ):
                       message="Method completed",
                       data={
                            "root":xr,
-                           "headers":["i","xi","xs","xr","fxi","fxs","fxr","error"],
+                           "headers":["i","xi","xs","xr","fxi","fxs","fxr","----"],
                            "rows": rows,
                            "steps": steps,
                            "message_detention":f"El método realizo { MAX_ITER} iteraciones, el máximo soportado"

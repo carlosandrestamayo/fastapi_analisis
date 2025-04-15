@@ -32,6 +32,7 @@ class BisectionRequest(BaseModel):
     )
     criterion_value: Union[float, int] = Field(
         ..., 
+        gt=0,
         description="Value for the stopping criterion. Must be int if criterio is 'max_iter'"
     )
 

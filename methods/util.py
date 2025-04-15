@@ -1,5 +1,7 @@
 from sympy import sympify, symbols, lambdify, diff
 from sympy.core.sympify import SympifyError
+from schemas.biseccion import BisectionResponse
+from typing import List
 
 def convert_to_decimal(n, decimales):
     
@@ -32,3 +34,39 @@ def tolerancia(xr_last, xr, decimals):
 
 def error_relativo(xr_anterior, xr, decimals):
   return round(abs((xr - xr_anterior) / xr), decimals)
+
+
+
+
+def validar_funcion_sympy(expr_str: str, variables_permitidas: List[str] = ["x"]) -> BisectionResponse:
+    #except SympifyError as e:
+
+    # try:
+    #     expr = sympify(expr_str)
+    #     return BisectionResponse(success=True, message="Función válida.", data=None)
+    # except SympifyError as e:
+    #     return BisectionResponse(success=False, message=f"Error de parsing: {e}", data=None)
+    # except Exception as e:
+    #     return BisectionResponse(success=False, message=f"Error inesperado: {e}", data=None)
+    try:
+        expr = sympify(expr_str)
+        # Verificar que no haya variables inesperadas
+        variables_usadas = [str(s) for s in expr.free_symbols]
+        for v in variables_usadas:
+            if v not in variables_permitidas:
+                return BisectionResponse(
+                    success=False,
+                    message=f"La expresión usa variables no permitidas: {v}",
+                    data=None
+                )
+        return BisectionResponse(
+            success=True,
+            message="La función es válida.",
+            data=None
+        )
+    except Exception as e:
+        return BisectionResponse(
+            success=False,
+            message=f"La función es inválida: {str(e)}",
+            data=None
+        )

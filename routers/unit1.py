@@ -1,9 +1,11 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from schemas.biseccion import BisectionRequest, BisectionResponse
 from schemas.bolzano import BolzanoRequest, BolzanoResponse
 from methods.bolzano import teorema_bolzano
-from methods.biseccion import bisection_method, imprimir_biseccion
+from methods.biseccion import bisection_method
 from pydantic import BaseModel, ValidationError
+from typing import List, Optional
+from sympy import symbols, sympify, lambdify
 
 router = APIRouter()
 
@@ -17,32 +19,60 @@ def bolzano(request: BolzanoRequest):
             message= str(e),
             data= None
         )
-    
+
 @router.post('/biseccion', response_model=BisectionResponse)
-def bisection(request: BisectionRequest):
+async def bisection(request: Request)-> BisectionRequest:
+
     try:
-        response = bisection_method(request)
-        #print(response)
-        return response
-    
-    except ValidationError as e:
-        raise HTTPException(
-            status_code=422,
-            detail=f"Error de validación: {e.errors()}"
-        )
+        body = await request.json()
+
+        #Crear en util la validacion de funciones de sympy para una sola variable
+
+        try:
+            x = symbols("x")
+            expr = sympify(body.get("function"))
+            f = lambdify(x, expr, modules=["math"])
+        except Exception as e:
+            return BisectionResponse(success=False, message=f"Función no válida: {e}", data=None)
+
+        # Validación de los valores del request de la clase BisectionRequest
+        try:
+            request_data = BisectionRequest(**body)
+        except ValidationError as e:
+            return BisectionResponse(
+                success=False,
+                message=f"Error de validación: {str(e)}",
+                data=None
+            )
+        
+        #Validar que criterion_value sea mayor que cero sin embargo esa condición esta dada en el schema
+        #Validar que criterion_value sea entero si criterion es "max_iter"
+
+        # # ✅ Validación adicional: si criterion es max_iter, el valor debe ser entero
+        # if request_data.criterion == "max_iter" and not isinstance(request_data.criterion_value, int):
+        #     return BisectionResponse(
+        #         success=False,
+        #         message="El valor de 'criterion_value' debe ser un entero si el criterio es 'max_iter'.",
+        #         data=None
+        #     )
+
+
+
+        # Ejecución del método
+        response = await bisection_method(request_data)
+        #return await bisection_method(request_data)
+        return response 
+        # return BisectionResponse(
+        #     success=True,
+        #     message="Method completed!",
+        #     data= None
+        # )    
     
     except Exception as e:
-        #print(e)
+        return BisectionResponse(
+            success=False, 
+            message=f"Error inesperado: {str(e)}", 
+            data=None
+        )
 
-        raise HTTPException(status_code=400, detail={"success": False, "message": str(e)})
-        # return BisectionResponse(
-        #     success= False,
-        #     message= str(e),
-        #     data= None
-        # )
 
-@router.post('/imprimirbiseccion')
-def imprimir(request: BisectionRequest):
-    
-    response = imprimir_biseccion(request)
-    return response

@@ -16,7 +16,7 @@ async def bisection_method(data: BisectionRequest):
     try:
         # Extraer los datos del request
         #fn = data.function
-        raw_fn = data.function
+        raw_fn = data.function  
         xi = data.xi
         xs = data.xs
         decimals = data.decimals

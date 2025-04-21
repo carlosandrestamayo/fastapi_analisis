@@ -143,6 +143,7 @@ async def bisection_method(data: BisectionRequest):
             row.isRoot = isRoot
             row.error = "--" if iteration == 1 else error
             
+            #Cambio para push
             # Agregar fila a la tabla
             # rows.append(BisectionRow(
             #     iteration=iteration,

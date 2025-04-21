@@ -1,20 +1,16 @@
 from sympy import sympify, symbols, lambdify, diff
 from sympy.core.sympify import SympifyError
-from schemas.biseccion import BisectionResponse
+from schemas.bisection import BisectionResponse
 from typing import List
 
 def convert_to_decimal(n, decimales):
-    
     formato = f"{{:.{decimales}f}}"
     return formato.format(n)
     
-def evaluate_function(fn, a, decimales = 4):
-    try:
-        x = symbols('x')
-        f = lambdify(x,fn)
-        return round(f(a), decimales)
-    except TypeError as e:
-        print(e)
+def evaluate_function(fn, a, decimales=4):
+    x = symbols('x')
+    f = lambdify(x, fn)
+    return round(f(a), decimales)
     
     
 def teorema_bolzano(fn, a, b, decimales):
